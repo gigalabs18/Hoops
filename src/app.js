@@ -40,7 +40,7 @@ var webServiceCall = require("./callWebService");
     var result;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0: return [4 /*yield*/, webServiceCall()];
+            case 0: return [4 /*yield*/, webServiceCall('Tony Stark', 100.1)];
             case 1:
                 result = _a.sent();
                 console.log(result);

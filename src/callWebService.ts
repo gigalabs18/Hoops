@@ -1,15 +1,11 @@
 const soapRequest = require("./helpers/soapRequest");
-var parseString = require("xml2js").parseString;
-const firstUrl = "http://www.learnwebservices.com/services/hello?WSDL";
-const secondUrl = "http://www.learnwebservices.com/services/tempconverter?wsdl";
-const sampleHeaders = {
-  "user-agent": "sampleTest",
-  "Content-Type": "text/xml;charset=UTF-8",
-  soapAction: "",
-};
-const firstParam = 'Tony Stark';
-const secondParam = 100.1;
-const firstXml = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
+var parser = require('xml2json');
+
+
+
+
+async function callWebService(firstParam:any,secondParam:any) {
+  const firstXml = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
 <Body>
     <SayHello xmlns="http://learnwebservices.com/services/hello">
         <HelloRequest>
@@ -26,7 +22,13 @@ const secondXml = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
     </FahrenheitToCelsiusRequest>
 </Body>
 </Envelope>`;
-async function callWebService() {
+const firstUrl = "http://www.learnwebservices.com/services/hello?WSDL";
+const secondUrl = "http://www.learnwebservices.com/services/tempconverter?wsdl";
+const sampleHeaders = {
+  "user-agent": "sampleTest",
+  "Content-Type": "text/xml;charset=UTF-8",
+  soapAction: "",
+};
   let firstResult,secondResult;
   const { response:firstResponse } = await soapRequest({
     url: firstUrl,
@@ -43,24 +45,15 @@ async function callWebService() {
   });
 
 
-  parseString(firstResponse.body, function (err:any, result:any) {
-    
-      firstResult = result["soap:Envelope"]["soap:Body"][0]["SayHelloResponse"][0][
-        "HelloResponse"
-      ][0]["Message"][0]
-    
-   
-  });
+  firstResult = JSON.parse(parser.toJson(firstResponse.body))
+  firstResult = firstResult["soap:Envelope"]["soap:Body"]["SayHelloResponse"]["HelloResponse"]["Message"]
 
-  parseString(secondResponse.body, function (err:any, result:any) {
-    
-      secondResult = Math.round(parseFloat(result["soap:Envelope"]["soap:Body"][0][
-        "FahrenheitToCelsiusResponse"
-      ][0]["TemperatureInCelsius"][0]))
-    
-   
-  });
-  return firstParam+' is '+ secondResult +' years old'
+  secondResult = JSON.parse(parser.toJson(secondResponse.body))
+  secondResult = Math.round(parseFloat(secondResult["soap:Envelope"]["soap:Body"][
+    "FahrenheitToCelsiusResponse"
+  ]["TemperatureInCelsius"]))
+
+ return firstParam+' is '+ secondResult +' years old'
 
 };
 

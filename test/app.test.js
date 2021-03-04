@@ -42,7 +42,7 @@ describe("Success Case", function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, testWebserviceCall()];
+                case 0: return [4 /*yield*/, testWebserviceCall('Tony Stark', 100.1)];
                 case 1:
                     result = _a.sent();
                     assert.equal(result, 'Tony Stark is 38 years old');
@@ -50,11 +50,13 @@ describe("Success Case", function () {
             }
         });
     }); });
+});
+describe("Faliure Case", function () {
     it("Should return not return Tony Stark is 39 years old", function () { return __awaiter(_this, void 0, void 0, function () {
         var result;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, testWebserviceCall()];
+                case 0: return [4 /*yield*/, testWebserviceCall('Tony Stark', 100.1)];
                 case 1:
                     result = _a.sent();
                     assert.notEqual(result, 'Tony Stark is 39 years old');
