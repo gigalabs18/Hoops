@@ -69,8 +69,10 @@ function callWebService(firstParam, secondParam) {
                     secondResponse = (_a.sent()).response;
                     firstResult = JSON.parse(parser.toJson(firstResponse.body));
                     firstResult = firstResult["soap:Envelope"]["soap:Body"]["SayHelloResponse"]["HelloResponse"]["Message"];
+                    console.log('First Response: ' + firstResult);
                     secondResult = JSON.parse(parser.toJson(secondResponse.body));
                     secondResult = Math.round(parseFloat(secondResult["soap:Envelope"]["soap:Body"]["FahrenheitToCelsiusResponse"]["TemperatureInCelsius"]));
+                    console.log('Second Response: ' + secondResult);
                     return [2 /*return*/, firstParam + ' is ' + secondResult + ' years old'];
             }
         });

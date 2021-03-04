@@ -1,7 +1,7 @@
 const axios = require("axios-https-proxy-fix");
 
 module.exports = function soapRequest(
-  opts = {
+  params = {
     url: "",
     headers: {},
     xml: "",
@@ -9,7 +9,7 @@ module.exports = function soapRequest(
     proxy: false,
   }
 ) {
-  const { url, headers, xml, timeout, proxy } = opts;
+  const { url, headers, xml, timeout, proxy } = params;
   return new Promise((resolve, reject) => {
     axios({
       method: "post",

@@ -3,7 +3,7 @@ var parser = require('xml2json');
 
 
 
-
+// First objective request XML
 async function callWebService(firstParam:any,secondParam:any) {
   const firstXml = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
 <Body>
@@ -15,6 +15,7 @@ async function callWebService(firstParam:any,secondParam:any) {
 </Body>
 </Envelope>`;
 
+// Second objective request XML
 const secondXml = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
 <Body>
     <FahrenheitToCelsiusRequest xmlns="http://learnwebservices.com/services/tempconverter">
@@ -22,7 +23,10 @@ const secondXml = `<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/">
     </FahrenheitToCelsiusRequest>
 </Body>
 </Envelope>`;
+
+//First objective URL
 const firstUrl = "http://www.learnwebservices.com/services/hello?WSDL";
+//Second objective URL
 const secondUrl = "http://www.learnwebservices.com/services/tempconverter?wsdl";
 const sampleHeaders = {
   "user-agent": "sampleTest",
@@ -30,6 +34,8 @@ const sampleHeaders = {
   soapAction: "",
 };
   let firstResult,secondResult;
+
+  //Requesting second SOAP webservice
   const { response:firstResponse } = await soapRequest({
     url: firstUrl,
     headers: sampleHeaders,
@@ -37,6 +43,7 @@ const sampleHeaders = {
     timeout: 1000,
   });
 
+  //Requesting second SOAP webservice
   const { response:secondResponse } = await soapRequest({
     url: secondUrl,
     headers: sampleHeaders,
@@ -46,13 +53,21 @@ const sampleHeaders = {
 
 
   firstResult = JSON.parse(parser.toJson(firstResponse.body))
+  // Parsing first response
   firstResult = firstResult["soap:Envelope"]["soap:Body"]["SayHelloResponse"]["HelloResponse"]["Message"]
 
+  console.log('First Response: '+firstResult)
+
   secondResult = JSON.parse(parser.toJson(secondResponse.body))
+  //Parsing second response
   secondResult = Math.round(parseFloat(secondResult["soap:Envelope"]["soap:Body"][
     "FahrenheitToCelsiusResponse"
   ]["TemperatureInCelsius"]))
 
+  console.log('Second Response: '+secondResult)
+
+
+  // Returning the required response.
  return firstParam+' is '+ secondResult +' years old'
 
 };
